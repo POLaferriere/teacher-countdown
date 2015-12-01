@@ -1,106 +1,55 @@
 import React from 'react';
-import moment from 'moment';
-require('moment-range');
-import DateRangePicker from 'react-daterange-picker';
-
-const stateDefinitions = {
-  available: {
-    selectable: true,
-    color: null,
-    label: 'Available',
-  },
-  picked: {
-    selectable: true,
-    color: '#ffd200',
-    label: 'Picked',
-  },
-};
-
-function camelize(str) {
-  return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
-    if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
-    return index == 0 ? match.toLowerCase() : match.toUpperCase();
-  });
-}
-
-function randomizeColor() {
-  var color = []
-  var i = 0;
-  while (i < 6 ) {
-    color.push(Math.round(Math.random()*16).toString(16));
-    i++;
-  }
-  return '#' + color.join('');
-}
+import MultiDateRange from './multi-daterange'
+import dynamics from 'dynamics.js'
 
 const App = React.createClass({
-  getInitialState() {
-    return {
-      time: moment(moment('2016-1-25').valueOf() - Date.now()).format('DDD [days] H [hours] mm [minutes] ss [seconds]'),
-      value: null,
-      dateRanges: []
-    }
-  },
+	getInitialState() {
+		return {
+			showModal: false,
+		}
+	},
 
-  componentWillMount() {
-    // setInterval(() => {
-    //   this.setState({
-    //     time: moment(moment('2016-1-25').valueOf() - Date.now()).format('DDD [days] H [hours] mm [minutes] ss [seconds]')
-    //   })
-    // }, 999)
-  },
+	showModal() {
+		this.setState({
+			showModal: true,
+		})
 
-  handleSelect(range) {
-    this.setState({
-      value: range,
-    })
-  },
+		setTimeout(() => {dynamics.animate(document.querySelector('.modal'), {
+			opacity: 1,
+			scale: 1,
+			translateX: -250,
+			translateY: -200,
+		}, {
+			type: dynamics.spring,
+			duration: 850,
+			frequency: 200
+		})})
+	},
 
-  handleSave(e) {
-    e.preventDefault()
+	closeModal() {
+		dynamics.animate(document.querySelector('.modal'), {
+			opacity: 0,
+		}, {
+			type: dynamics.easeInOut,
+			duration: 500,
+		})
 
-    stateDefinitions[camelize(this.state.textValue)] = {
-      label: this.state.textValue,
-      color: randomizeColor(),
-    }
+		setTimeout(() => {this.setState({
+			showModal: false,
+		})}, 500)
+	},
 
-    this.state.dateRanges.push({
-      state: camelize(this.state.textValue),
-      range: this.state.value,
-    })
-    this.setState({
-      dateRanges: this.state.dateRanges,
-      textValue: '',
-      value: null,
-    })
-  }, 
-
-  handleTextChange(e) {
-    this.setState({
-      textValue: e.target.value,
-    })
-  },
-
-  render() {
-    return (
-      <div className='container'>
-        <DateRangePicker 
-        firstOfWeek={1}
-        onSelect={this.handleSelect} 
-        numberOfCalendars={1}
-        selectionType='range'
-        dateStates={this.state.dateRanges}
-        minimumData={new Date()}
-        value={this.state.value}
-        defaultState='available'
-        stateDefinitions={stateDefinitions}
-        dateStates={this.state.dateRanges}/>
-        <button onClick={this.handleSave}>Select</button>
-        <input type="text" value={this.state.textValue} onChange={this.handleTextChange}/>
-      </div>
-    );
-  }
-
-});
+	render() {
+		return (
+			<div className="app">
+				<button onClick={this.showModal}>Set Dates</button>
+				{this.state.showModal &&
+					<div className="modal">
+						<MultiDateRange onClose={this.closeModal}/>
+					</div>}
+			</div>
+		)
+	}
+})
 
 export default App;

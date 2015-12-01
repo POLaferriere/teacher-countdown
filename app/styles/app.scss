@@ -1,9 +1,29 @@
-// @import 'bourbon';
+@import 'bourbon';
 // @import 'neat';
 @import '../../node_modules/react-daterange-picker/dist/css/react-calendar.css';
 
 html, body, #application {
 	height: 100%;
+}
+
+.app {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 100%;
+	background: #666;
+}
+
+.modal {
+	@include size(500px 400px);
+
+	position: absolute;
+	top: 	50%;
+	left: 50%;
+	transform: translate(-50%, -50%)  scale(0.1);
+	background: white;
+	opacity: 0;
 }
 
 .container {
@@ -12,4 +32,10 @@ html, body, #application {
 	align-items: center;
 
 	height: 100%;
+	background: white;
+}
+
+.fa-times-circle-o {
+	@include size(30px 30px);
+	@include position(absolute, 10px 10px null null);
 }
