@@ -2,20 +2,10 @@ import React from 'react';
 import moment from 'moment';
 require('moment-range');
 import DateRangePicker from 'react-daterange-picker';
-import Icon from 'react-fa';
+import _ from 'underscore';
+import store from '../store'
 
-const stateDefinitions = {
-  available: {
-    selectable: true,
-    color: null,
-    label: 'Available',
-  },
-  picked: {
-    selectable: true,
-    color: '#ffd200',
-    label: 'Picked',
-  },
-};
+
 
 function camelize(str) {
   return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) => {
@@ -39,16 +29,27 @@ const MultiDateRange = React.createClass({
     return {
       time: moment(moment('2016-1-25').valueOf() - Date.now()).format('DDD [days] H [hours] mm [minutes] ss [seconds]'),
       value: null,
-      dateRanges: []
+      dateRanges: [],
+      district: '',
+      stateDefinitions: {
+        available: {
+          selectable: true,
+          color: null,
+          label: 'Available',
+        },
+        picked: {
+          selectable: true,
+          color: '#ffd200',
+          label: 'Picked',
+        },
+      }
     }
   },
 
-  componentWillMount() {
-    // setInterval(() => {
-    //   this.setState({
-    //     time: moment(moment('2016-1-25').valueOf() - Date.now()).format('DDD [days] H [hours] mm [minutes] ss [seconds]')
-    //   })
-    // }, 999)
+  handleDistrictChange(e) {
+    this.setState({
+      district: e.target.value,
+    })
   },
 
   handleSelect(range) {
@@ -60,7 +61,7 @@ const MultiDateRange = React.createClass({
   handleSave(e) {
     e.preventDefault()
 
-    stateDefinitions[camelize(this.state.textValue)] = {
+    this.state.stateDefinitions[camelize(this.state.textValue)] = {
       label: this.state.textValue,
       color: randomizeColor(),
     }
@@ -73,6 +74,7 @@ const MultiDateRange = React.createClass({
       dateRanges: this.state.dateRanges,
       textValue: '',
       value: null,
+      stateDefinitions: this.state.stateDefinitions,
     })
   }, 
 
@@ -82,10 +84,28 @@ const MultiDateRange = React.createClass({
     })
   },
 
+  handleSaveAndClose(e) {
+    e.preventDefault();
+    console.log(this.state.dateRanges)
+
+    this.props.onSave(
+      store.getDistrictCollection().create({
+        district: this.state.district,
+        breaks: this.state.dateRanges,
+      })
+    )
+  },
+
   render() {
     return (
-      <div className='container'>
-        <Icon name='times-circle-o' onClick={this.props.onClose}/>
+      <div className='multi-daterange'>
+        <input 
+          className='multi-district-input' 
+          type="text" 
+          placeholder='Enter name of district' 
+          value={this.state.district}
+          onChange={this.handleDistrictChange}/>
+        <h1 className='multi-title'>Enter the established holidays in the calendar, one at a time</h1>
         <DateRangePicker 
         firstOfWeek={1}
         onSelect={this.handleSelect} 
@@ -95,10 +115,19 @@ const MultiDateRange = React.createClass({
         minimumData={new Date()}
         value={this.state.value}
         defaultState='available'
-        stateDefinitions={stateDefinitions}
-        dateStates={this.state.dateRanges}/>
-        <button onClick={this.handleSave}>Select</button>
-        <input type="text" value={this.state.textValue} onChange={this.handleTextChange}/>
+        stateDefinitions={this.state.stateDefinitions}
+        dateStates={this.state.dateRanges}
+        singleDateRange={true}/>
+        <div className="date-enter">
+          <input 
+            className='multi-name-input'
+            type="text" 
+            value={this.state.textValue} 
+            onChange={this.handleTextChange}
+            placeholder="Enter a name for the break"/>
+          <button className='multi-set-button' onClick={this.handleSave}>Set</button>
+        </div>
+        <button className='multi-save-button' onClick={this.handleSaveAndClose}>Save and Close</button>
       </div>
     );
   }

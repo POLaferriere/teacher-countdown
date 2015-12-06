@@ -1,19 +1,62 @@
 import React from 'react';
-import MultiDateRange from './multi-daterange'
 import dynamics from 'dynamics.js'
+import moment from 'moment'
+require('moment-range');
+
+import Clock from './clock'
+import LogIn from './log-in'
+import LoginModal from './login-modal'
+
+import store from '../store'
+
+
 
 const App = React.createClass({
 	getInitialState() {
 		return {
-			showModal: false,
+			logIn: false,
+			setDates: false,
+			clock: false,
+			dateRanges: null
 		}
 	},
 
-	showModal() {
-		this.setState({
-			showModal: true,
-		})
+	componentWillMount() {
+		let districts = store.getDistrictCollection()
 
+		if (!!localStorage.getItem('parse-session-token')) {
+			
+			districts.fetch().then(() => {
+				this.setState({
+					setDates: true,
+				})
+				if(!!session.getCurrentUser().get('homeDistrict')) {
+					let districts = store.getDistrictCollection()
+					let district = districts.find((district) => {
+						return district.get('objectId') == session.getCurrentUser().get('homeDistrict').objectId
+					})
+					this.showClock(district)
+				} else {
+					this.showModal()
+				}
+			})
+		} else {
+			districts.fetch()
+			this.setState({
+				logIn: true,
+			})
+		}
+	},
+
+	onLogin() {
+		this.setState({
+			logIn: false,
+			setDates: true,
+		})
+		this.showModal()
+	},
+
+	showModal() {
 		setTimeout(() => {dynamics.animate(document.querySelector('.modal'), {
 			opacity: 1,
 			scale: 1,
@@ -23,30 +66,35 @@ const App = React.createClass({
 			type: dynamics.spring,
 			duration: 850,
 			frequency: 200
-		})})
+		})}, 1000)
 	},
 
-	closeModal() {
-		dynamics.animate(document.querySelector('.modal'), {
-			opacity: 0,
-		}, {
-			type: dynamics.easeInOut,
-			duration: 500,
+	showClock(model) {
+		this.setState({
+			logIn: false,
+			setDates: false,
+			clock: true,
+			dateRanges: model.get('breaks').map((ind) => {
+				return {
+					range: moment.range(ind.range.start, ind.range.end),
+					state: ind.state,
+				}
+			})
 		})
-
-		setTimeout(() => {this.setState({
-			showModal: false,
-		})}, 500)
 	},
 
 	render() {
 		return (
 			<div className="app">
-				<button onClick={this.showModal}>Set Dates</button>
-				{this.state.showModal &&
-					<div className="modal">
-						<MultiDateRange onClose={this.closeModal}/>
-					</div>}
+				{this.state.logIn &&
+					<LogIn onLogin={this.onLogin} onSignup={this.onLogin}/>}
+
+				{this.state.setDates && 
+					<LoginModal onSave={this.showClock} onSelect={this.showClock}/> }
+
+				{/*Show clock when dates have been set */}		
+				{this.state.clock &&
+					<Clock dateRanges={this.state.dateRanges}/>}
 			</div>
 		)
 	}

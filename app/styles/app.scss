@@ -1,20 +1,123 @@
 @import 'bourbon';
 // @import 'neat';
 @import '../../node_modules/react-daterange-picker/dist/css/react-calendar.css';
+@import url(https://fonts.googleapis.com/css?family=Electrolize|Raleway);
 
 html, body, #application {
 	height: 100%;
+	font-size: 62.5%;
+	font-family: $helvetica;
+	margin: 0;
 }
 
 .app {
+	@include background(linear-gradient(rgb(191, 214, 236), rgb(216, 250, 203)), bottom no-repeat);
 	display: flex;
 	justify-content: center;
 	align-items: center;
 
 	height: 100%;
-	background: #666;
 }
 
+//--------------Log In---------------//
+.login-container {
+	display: flex;
+	justify-content: center;
+	
+	width: 100%;
+}
+
+.log-in {
+	display: flex;
+	flex-flow: column nowrap;
+
+	width: 40%;
+
+	.log-in-title {
+		font-size: 4rem;
+		text-align: center;
+	}
+}
+
+.log-in-username-container,
+.log-in-password-container {
+	display: flex;
+	flex-flow: row nowrap;
+	margin: 5px 0;
+	label {
+		flex: 2;
+		font-size: 1.6rem;
+	}
+	input {
+		flex: 3;
+		font-size: 1.6rem;
+	}
+}
+
+.log-in-button {
+	margin: 30px auto 0;
+
+	width: 50%;
+	font-size: 3rem;
+	line-height: 3rem;
+	border-radius: 0;
+}
+
+.log-in-signup {
+	text-align: center;
+	font-size: 1.6rem;
+}
+
+.log-in-click {
+	color: rgb(42, 135, 249);
+	cursor: pointer;
+}
+
+.signup {
+	display: flex;
+	flex-flow: column nowrap;
+
+	width: 40%;
+}
+
+.signup-title {
+	font-size: 4rem;
+	text-align: center;
+}
+
+.signup-username-container,
+.signup-email-container,
+.signup-password-container,
+.signup-password-repeat-container {
+	display: flex;
+	margin: 5px 0;
+	padding: 0 10%;
+	font-size: 1.6rem;
+	label {
+		flex: 1;
+		text-align: right;
+		margin-right: 10px;
+	}
+	input {
+		flex: 1;
+	}
+}
+
+.signup-button {
+	margin: 30px auto 20px;
+
+	width: 50%;
+	font-size: 3rem;
+}
+
+.signup-back {
+	font-size: 1.2rem;
+	text-align: center;
+	cursor: pointer;
+	color: rgb(42, 135, 249);
+}
+
+//----------Login Modal--------------//
 .modal {
 	@include size(500px 400px);
 
@@ -26,16 +129,140 @@ html, body, #application {
 	opacity: 0;
 }
 
-.container {
+//------------Pick District------------//
+.pick-district {
 	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+}
+
+.pick-district-title {
+	text-align: center;
+	font-size: 3rem;
+	margin-top: 50px;
+}
+
+.pick-district-select {
+	width: 75%;
+	margin: 50px auto 0;
+}
+
+.pick-district-default {
+	padding-left: 20%;
+	> * {
+		display: inline-block;
+		font-size: 1.2rem;
+	}
+}
+
+.pick-district-new {
+	text-align: center;
+	font-size: 1.4rem;
+}
+
+.pick-district-click {
+	cursor: pointer;
+	color: rgb(42, 135, 249);
+}
+
+.pick-district-button {
+	width: 50%;
+	margin: 30px auto 0;
+	font-size: 1.6rem;
+}
+
+//--------------Multi Daterange------------//
+
+.multi-daterange {
+	display: flex;
+	flex-flow: column nowrap;
 	justify-content: center;
 	align-items: center;
 
 	height: 100%;
 	background: white;
+	padding: 10px;
 }
 
-.fa-times-circle-o {
-	@include size(30px 30px);
-	@include position(absolute, 10px 10px null null);
+.multi-district-input {
+	width: 60%;
+	font-size: 2.2rem;
+}
+
+.multi-title {
+	font-size: 2rem;
+	margin-top: 50px;
+	text-align: center;
+}
+
+.multi-name-input {
+	width: 200px;
+	font-size: 1.6rem;
+}
+
+.multi-set-button {
+	position: relative;
+	top: -1px;
+	font-size: 1.6rem;
+	height: 24px;
+}
+
+.multi-save-button {
+	margin-top: 30px;
+	font-size: 1.6rem;
+}
+
+#multi-close {
+	@include position(absolute, 20px 20px null null);
+	font-size: 3rem;
+	color: rgb(170, 170, 170);
+}
+
+.clock {
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.clock-container {
+	display: flex;
+}
+
+.clock-days-container,
+.clock-hours-container,
+.clock-minutes-container,
+.clock-seconds-container {
+	margin: 0 20px;
+	padding: 10px;
+	width: 100px;
+	background: rgb(49, 16, 59);
+	border-radius: 10px;
+
+}
+
+.clock-days,
+.clock-hours,
+.clock-minutes,
+.clock-seconds {
+	font-family: 'Electrolize', sans-serif;
+	text-align: center;
+	font-size: 6rem;
+	margin-top: 20px;
+	margin-bottom: 0;
+	color: rgb(215, 251, 254);
+}
+
+.clock-day,
+.clock-hour,
+.clock-minute,
+.clock-second {
+	font-family: 'Raleway', sans-serif;
+	text-align: center;
+	font-size: 2rem;
+	color: rgb(215, 251, 254);
+}
+
+.clock-break {
+	text-align: center;
+	font-size: 3rem;
+	color: rgb(49, 16, 59);
 }
