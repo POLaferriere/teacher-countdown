@@ -6,7 +6,7 @@ const PickDistrict = React.createClass({
 	handleSelect(e) {
 		let districts = store.getDistrictCollection()
 		let district = districts.find((district) => {return district.get('district') == this.refs.district.value})
-		console.log(this.refs.check.checked)
+		session.setCurrentDistrict(district)
 		if (this.refs.check.checked) {
 			$.ajax({
 				url: 'https://api.parse.com/1/users/' + session.getCurrentUser().get('objectId'),
@@ -20,7 +20,7 @@ const PickDistrict = React.createClass({
 				})
 			})
 		}
-		this.props.onSelect(district)	
+		this.props.onSelect()	
 	},
 
 	handleCreate() {
@@ -44,7 +44,7 @@ const PickDistrict = React.createClass({
 					<p>Set this district as your default</p>
 				</div>
 				<p className="pick-district-new">{"Can't find your district? "}
-					<span className="pick-district-click" onClick={this.handleCreate}>{"Click here to set your's up"}</span>
+					<span className="pick-district-click" onClick={this.handleCreate}>{"Click here to set it up"}</span>
 				</p>
 				<button className='pick-district-button' onClick={this.handleSelect}>Select District</button>
 			</div>

@@ -44,7 +44,15 @@ const Session = Backbone.Model.extend({
 
   getCurrentUser() {
     return this.get('currentUser');
-  }
+  },
+
+  setCurrentDistrict(district) {
+    return this.set('currentDistrict', district)
+  },
+
+  getCurrentDistrict() {
+    return this.get('currentDistrict') || null
+  },
 })
 
 export default Session;

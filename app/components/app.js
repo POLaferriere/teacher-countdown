@@ -2,6 +2,7 @@ import React from 'react';
 import dynamics from 'dynamics.js'
 import moment from 'moment'
 require('moment-range');
+import {History} from 'react-router'
 
 import Clock from './clock'
 import LogIn from './log-in'
@@ -12,6 +13,8 @@ import store from '../store'
 
 
 const App = React.createClass({
+	mixins: [History],
+
 	getInitialState() {
 		return {
 			logIn: false,
@@ -27,24 +30,20 @@ const App = React.createClass({
 		if (!!localStorage.getItem('parse-session-token')) {
 			
 			districts.fetch().then(() => {
-				this.setState({
-					setDates: true,
-				})
 				if(!!session.getCurrentUser().get('homeDistrict')) {
 					let districts = store.getDistrictCollection()
 					let district = districts.find((district) => {
 						return district.get('objectId') == session.getCurrentUser().get('homeDistrict').objectId
 					})
-					this.showClock(district)
+					session.setCurrentDistrict(district);
+					this.history.pushState({}, 'clock');
 				} else {
-					this.showModal()
+					this.history.pushState({}, 'pick-district')
 				}
 			})
 		} else {
 			districts.fetch()
-			this.setState({
-				logIn: true,
-			})
+			this.history.pushState({}, 'login')
 		}
 	},
 
@@ -54,19 +53,6 @@ const App = React.createClass({
 			setDates: true,
 		})
 		this.showModal()
-	},
-
-	showModal() {
-		setTimeout(() => {dynamics.animate(document.querySelector('.modal'), {
-			opacity: 1,
-			scale: 1,
-			translateX: -250,
-			translateY: -200,
-		}, {
-			type: dynamics.spring,
-			duration: 850,
-			frequency: 200
-		})}, 1000)
 	},
 
 	showClock(model) {
@@ -86,6 +72,7 @@ const App = React.createClass({
 	render() {
 		return (
 			<div className="app">
+				{this.props.children}
 				{this.state.logIn &&
 					<LogIn onLogin={this.onLogin} onSignup={this.onLogin}/>}
 

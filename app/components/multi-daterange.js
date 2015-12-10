@@ -86,14 +86,12 @@ const MultiDateRange = React.createClass({
 
   handleSaveAndClose(e) {
     e.preventDefault();
-    console.log(this.state.dateRanges)
 
-    this.props.onSave(
-      store.getDistrictCollection().create({
-        district: this.state.district,
-        breaks: this.state.dateRanges,
-      })
-    )
+    session.setCurrentDistrict(store.getDistrictCollection().create({
+      district: this.state.district,
+      breaks: this.state.dateRanges,
+    }))
+    this.history.setState({}, 'clock')
   },
 
   render() {

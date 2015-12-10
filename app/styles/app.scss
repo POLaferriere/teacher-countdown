@@ -36,6 +36,7 @@ html, body, #application {
 	.log-in-title {
 		font-size: 4rem;
 		text-align: center;
+		color: rgb(49, 16, 59);
 	}
 }
 
@@ -45,8 +46,10 @@ html, body, #application {
 	flex-flow: row nowrap;
 	margin: 5px 0;
 	label {
-		flex: 2;
+		flex: 1;
 		font-size: 1.6rem;
+		text-align: right;
+		margin-right: 10px;
 	}
 	input {
 		flex: 3;
@@ -58,9 +61,20 @@ html, body, #application {
 	margin: 30px auto 0;
 
 	width: 50%;
-	font-size: 3rem;
-	line-height: 3rem;
+	font-size: 2rem;
+	line-height: 2rem;
 	border-radius: 0;
+	border: 2px solid rgb(49, 16, 59);
+	color: rgb(49, 16, 59);
+	background: transparent;
+	&:hover {
+		color: rgb(191, 214, 236);
+		background: rgb(49, 16, 59);
+	} 
+	&:active {
+		color: rgb(49, 16, 59);
+		background: transparent;
+	}
 }
 
 .log-in-signup {
@@ -99,7 +113,8 @@ html, body, #application {
 		margin-right: 10px;
 	}
 	input {
-		flex: 1;
+		flex: 2;
+		font-size: 1.6rem;
 	}
 }
 
@@ -107,7 +122,20 @@ html, body, #application {
 	margin: 30px auto 20px;
 
 	width: 50%;
-	font-size: 3rem;
+	font-size: 2rem;
+
+	border-radius: 0;
+	border: 2px solid rgb(49, 16, 59);
+	color: rgb(49, 16, 59);
+	background: transparent;
+	&:hover {
+		color: rgb(191, 214, 236);
+		background: rgb(49, 16, 59);
+	} 
+	&:active {
+		color: rgb(49, 16, 59);
+		background: transparent;
+	}
 }
 
 .signup-back {
@@ -127,6 +155,7 @@ html, body, #application {
 	transform: translate(-50%, -50%)  scale(0.1);
 	background: white;
 	opacity: 0;
+	border: 2px solid rgb(49, 16, 59);
 }
 
 //------------Pick District------------//
@@ -140,11 +169,15 @@ html, body, #application {
 	text-align: center;
 	font-size: 3rem;
 	margin-top: 50px;
+	color: rgb(49, 16, 59);
 }
 
 .pick-district-select {
 	width: 75%;
-	margin: 50px auto 0;
+	margin: 20px auto 0;
+	padding: 5px;
+	font-size: 1.6rem;
+	-webkit-appearance: none;
 }
 
 .pick-district-default {
@@ -167,8 +200,21 @@ html, body, #application {
 
 .pick-district-button {
 	width: 50%;
-	margin: 30px auto 0;
-	font-size: 1.6rem;
+	margin: 50px auto 0;
+	font-size: 2rem;
+	line-height: 2rem;
+	border-radius: 0;
+	border: 2px solid rgb(49, 16, 59);
+	color: rgb(49, 16, 59);
+	background: transparent;
+	&:hover {
+		color: rgb(191, 214, 236);
+		background: rgb(49, 16, 59);
+	} 
+	&:active {
+		color: rgb(49, 16, 59);
+		background: transparent;
+	}
 }
 
 //--------------Multi Daterange------------//
@@ -181,12 +227,13 @@ html, body, #application {
 
 	height: 100%;
 	background: white;
-	padding: 10px;
+	padding: 0 10px;
 }
 
 .multi-district-input {
 	width: 60%;
 	font-size: 2.2rem;
+	border: 2px solid rgb(49, 16, 59);
 }
 
 .multi-title {
@@ -198,18 +245,44 @@ html, body, #application {
 .multi-name-input {
 	width: 200px;
 	font-size: 1.6rem;
+	border: 2px solid rgb(49, 16, 59);
+	border-right: none;
 }
 
 .multi-set-button {
 	position: relative;
-	top: -1px;
+	top: 1px;
 	font-size: 1.6rem;
 	height: 24px;
+	border-radius: 0;
+	border: 2px solid rgb(49, 16, 59);
+	color: rgb(49, 16, 59);
+	background: transparent;
+	&:hover {
+		color: rgb(191, 214, 236);
+		background: rgb(49, 16, 59);
+	} 
+	&:active {
+		color: rgb(49, 16, 59);
+		background: transparent;
+	}
 }
 
 .multi-save-button {
 	margin-top: 30px;
 	font-size: 1.6rem;
+	border-radius: 0;
+	border: 2px solid rgb(49, 16, 59);
+	color: rgb(49, 16, 59);
+	background: transparent;
+	&:hover {
+		color: rgb(191, 214, 236);
+		background: rgb(49, 16, 59);
+	} 
+	&:active {
+		color: rgb(49, 16, 59);
+		background: transparent;
+	}
 }
 
 #multi-close {
@@ -265,4 +338,65 @@ html, body, #application {
 	text-align: center;
 	font-size: 3rem;
 	color: rgb(49, 16, 59);
+}
+
+#settings {
+	position: absolute;
+	top: 10%;
+	right: 10%;
+	font-size: 4rem;
+	transition: all .3s ease-in-out;
+	cursor: pointer;
+	&:hover {
+		color: rgb(99, 66, 109);
+		transition: all .3s ease-in-out;
+	}
+}
+
+//-------------Settings Menu------------//
+.settings-menu {
+	width: 200px;
+	position: absolute;
+	top: 17%;
+	right: 10%;
+	border: 2px solid rgb(49, 16, 59);
+	background: white;
+	cursor: default;
+
+	opacity: 0;
+	transform: scale(0.1);
+}
+
+.settings-triangle {
+	@include triangle(30px, rgb(49, 16, 59) transparent, up);
+	position: absolute;
+	top: -16px;
+	right: -1px;
+	z-index: 4;
+}
+
+.settings-triangle-border {
+	@include triangle(28px, white, up);
+	position: absolute;
+	top: -13px;
+	right: 0px;
+	z-index: 5;
+}
+
+.settings {
+	list-style: none;
+	font-size: 1.8rem;
+	margin: 0;
+	padding: 10px;
+}
+
+.setting {
+	margin: 10px 0;
+	color: black;
+	cursor: pointer;
+	transition: color .3s ease-in-out;
+	&:hover {
+		color: rgb(99, 66, 109);
+		transition: color .3s ease-in-out;
+	}
 }
